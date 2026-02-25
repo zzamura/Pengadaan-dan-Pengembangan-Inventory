@@ -50,6 +50,18 @@
       filter: brightness(1.05);
       box-shadow: 0 8px 15px rgba(2, 132, 199, 0.2);
     }
+    
+    /* Chrome, Safari, Edge, Opera: Remove arrows from number input */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox: Remove arrows from number input */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 <body>
@@ -57,42 +69,48 @@
   <div class="glass-card w-full max-w-md p-8 sm:p-10">
     <header class="text-center mb-8">
       <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Logistik Himpunan</h1>
-      <p class="text-slate-500 text-sm mt-2">Formulir Pengadaan Barang Inventaris</p>
+      <p class="text-slate-500 text-sm mt-2">Formulir Resmi Pengadaan Inventaris</p>
     </header>
 
-    <form id="inventarisForm" class="space-y-5">
+    <form id="inventarisForm" class="space-y-4">
       <div>
-        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Siapa nama kamu?</label>
-        <input type="text" id="nama" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Ketik nama lengkap di sini" required>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Lengkap Pengaju</label>
+        <input type="text" id="nama" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Masukkan nama sesuai identitas" required>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dari bidang mana?</label>
-        <input type="text" id="bidang" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Misal: Ekotif / PSDM" required>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Departemen / Bidang</label>
+        <input type="text" id="bidang" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Contoh: Ekonomi Kreatif (Ekotif)" required>
+      </div>
+
+      <div class="grid grid-cols-3 gap-3">
+        <div class="col-span-2">
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Barang</label>
+          <input type="text" id="keperluan" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Item yang diajukan" required>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Kuantitas</label>
+          <input type="number" id="jumlah" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Angka" required>
+        </div>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Mau ajukan barang apa?</label>
-        <input type="text" id="keperluan" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Contoh: Pin Himpunan dan Kabinet" required>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Peruntukan Kegiatan</label>
+        <input type="text" id="kegiatan" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Sebutkan nama program kerja" required>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Untuk kegiatan apa?</label>
-        <input type="text" id="kegiatan" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Nama acaranya apa?" required>
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Kapan pelaksanaannya?</label>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tanggal Pelaksanaan</label>
         <input type="date" id="tanggal" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" required>
       </div>
 
-      <button type="submit" class="btn-gradient w-full py-4 text-white font-bold rounded-xl flex items-center justify-center gap-2 mt-8">
-        Ajukan via WhatsApp
+      <button type="submit" class="btn-gradient w-full py-4 text-white font-bold rounded-xl flex items-center justify-center gap-2 mt-6 uppercase tracking-widest text-xs">
+        Kirim Pengajuan Resmi
       </button>
 
       <div class="pt-4 border-t border-slate-100">
         <p class="text-[11px] text-center text-slate-400 italic leading-relaxed">
-          Pengajuan kamu akan langsung dikirim ke nomor CS Ekotif untuk segera diproses.
+          Dokumen pengajuan ini akan diteruskan secara otomatis kepada pihak CS Ekotif.
         </p>
       </div>
     </form>
@@ -105,18 +123,19 @@
       const nama = document.getElementById("nama").value;
       const bidang = document.getElementById("bidang").value;
       const keperluan = document.getElementById("keperluan").value;
+      const jumlah = document.getElementById("jumlah").value;
       const kegiatan = document.getElementById("kegiatan").value;
       const tanggal = document.getElementById("tanggal").value;
 
-      // Konversi format tanggal ke bahasa Indonesia (Contoh: 08 Maret 2026)
+      // Konversi format tanggal ke bahasa Indonesia
       const dateObj = new Date(tanggal);
       const options = { day: '2-digit', month: 'long', year: 'numeric' };
       const formattedDate = dateObj.toLocaleDateString('id-ID', options);
 
-      // Pesan dengan format yang diminta: Barang dan Tanggal di-bold
+      // Format pesan WhatsApp sesuai permintaan terbaru
       const pesan = 
         `Halo CS Ekotif, saya *${nama}* dari bidang *${bidang}* mau mengajukan pengadaan barang inventaris.\n\n` +
-        `*Nama Barang: ${keperluan}*\n` +
+        `*Nama Barang: ${keperluan}* (${jumlah} Unit)\n` +
         `*Untuk Kegiatan: ${kegiatan}*\n` +
         `*Tanggal Pelaksanaan: ${formattedDate}*\n` +
         `----------------------------------------\n` +

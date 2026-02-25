@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Pengadaan Inventaris - Nuansa Bahari</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tailwind CSS for modern styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      /* Background gradient nuansa biru laut yang tenang */
+      background: radial-gradient(circle at top right, #f0f9ff, #e0f2fe, #bae6fd);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    /* Glassmorphism effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 1);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+      border-radius: 24px;
+    }
+
+    .input-field {
+      transition: all 0.2s ease;
+      border: 1.5px solid #e2e8f0;
+    }
+
+    .input-field:focus {
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+      outline: none;
+    }
+
+    .btn-gradient {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      transition: all 0.2s ease;
+    }
+
+    .btn-gradient:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 8px 15px rgba(2, 132, 199, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glass-card w-full max-w-md p-8 sm:p-10">
+    <header class="text-center mb-8">
+      <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Logistik Himpunan</h1>
+      <p class="text-slate-500 text-sm mt-2">Formulir Pengadaan Barang Inventaris</p>
+    </header>
+
+    <form id="inventarisForm" class="space-y-5">
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Siapa nama kamu?</label>
+        <input type="text" id="nama" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Ketik nama lengkap di sini" required>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dari bidang mana?</label>
+        <input type="text" id="bidang" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Misal: Ekotif / PSDM" required>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Mau ajukan barang apa?</label>
+        <input type="text" id="keperluan" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Contoh: Pin Himpunan dan Kabinet" required>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Untuk kegiatan apa?</label>
+        <input type="text" id="kegiatan" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" placeholder="Nama acaranya apa?" required>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Kapan pelaksanaannya?</label>
+        <input type="date" id="tanggal" class="input-field w-full px-4 py-3 rounded-xl text-slate-700 bg-slate-50/50" required>
+      </div>
+
+      <button type="submit" class="btn-gradient w-full py-4 text-white font-bold rounded-xl flex items-center justify-center gap-2 mt-8">
+        Ajukan via WhatsApp
+      </button>
+
+      <div class="pt-4 border-t border-slate-100">
+        <p class="text-[11px] text-center text-slate-400 italic leading-relaxed">
+          Pengajuan kamu akan langsung dikirim ke nomor CS Ekotif untuk segera diproses.
+        </p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("inventarisForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nama = document.getElementById("nama").value;
+      const bidang = document.getElementById("bidang").value;
+      const keperluan = document.getElementById("keperluan").value;
+      const kegiatan = document.getElementById("kegiatan").value;
+      const tanggal = document.getElementById("tanggal").value;
+
+      // Konversi format tanggal ke bahasa Indonesia (Contoh: 08 Maret 2026)
+      const dateObj = new Date(tanggal);
+      const options = { day: '2-digit', month: 'long', year: 'numeric' };
+      const formattedDate = dateObj.toLocaleDateString('id-ID', options);
+
+      // Pesan dengan format yang diminta: Barang dan Tanggal di-bold
+      const pesan = 
+        `Halo CS Ekotif, saya *${nama}* dari bidang *${bidang}* mau mengajukan pengadaan barang inventaris.\n\n` +
+        `*Nama Barang: ${keperluan}*\n` +
+        `*Untuk Kegiatan: ${kegiatan}*\n` +
+        `*Tanggal Pelaksanaan: ${formattedDate}*\n` +
+        `----------------------------------------\n` +
+        `Mohon bantuannya untuk diproses ya, terima kasih banyak!`;
+
+      const nomor = "6285772415686";
+      const url = "https://wa.me/" + nomor + "?text=" + encodeURIComponent(pesan);
+
+      window.open(url, "_blank");
+    });
+  </script>
+
+</body>
+</html>
